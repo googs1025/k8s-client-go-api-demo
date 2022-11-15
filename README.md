@@ -1,6 +1,7 @@
 ## client-go操作k8s资源练习demo
 
 ### 此项目使用client-go操作kubernetes资源对象
+![](https://github.com/googs1025/k8s-client-go-api-demo/blob/main/image/modb_20211018_a440841c-2ff3-11ec-9bb3-fa163eb4f6be.png?raw=true)
 
 #### 资源类：
 ```bigquery
