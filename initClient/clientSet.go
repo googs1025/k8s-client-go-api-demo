@@ -2,6 +2,7 @@ package initClient
 
 import (
 	"flag"
+	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
@@ -38,8 +39,18 @@ func K8sRestConfig() *rest.Config {
 }
 
 // 返回初始化k8s-client
-func InitClient() kubernetes.Interface {
-	c, err := kubernetes.NewForConfig(K8sRestConfig())
+func InitClient(config *rest.Config) kubernetes.Interface {
+	c, err := kubernetes.NewForConfig(config)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return c
+}
+
+// 返回初始化k8s-client
+func InitDynamicClient(config *rest.Config) dynamic.Interface {
+	c, err := dynamic.NewForConfig(config)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -59,9 +70,13 @@ var ClientSet = &Client{}
 
 type Client struct {
 	Client kubernetes.Interface	// 因为需要单元测试，所以不要用 *kubernetes.Clientset
+	DynamicClient dynamic.Interface
 }
 
 func init() {
-	ClientSet.Client = InitClient()
+	config := K8sRestConfig()
+	ClientSet.Client = InitClient(config)
+	ClientSet.DynamicClient = InitDynamicClient(config)
+
 }
 
