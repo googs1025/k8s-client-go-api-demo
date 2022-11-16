@@ -7,6 +7,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"log"
 	"reflect"
 	"testing"
 )
@@ -50,7 +51,7 @@ func TestDynamicClient(t *testing.T) {
 
 	data, _, _ := unstructured.NestedStringMap(obj.Object, "data")
 	if !reflect.DeepEqual(map[string]string{"foo": "bar"}, data) {
-		panic("Created ConfigMap has unexpected data")
+		log.Fatal("Created ConfigMap has unexpected data")
 	}
 
 
