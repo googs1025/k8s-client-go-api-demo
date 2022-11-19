@@ -6,6 +6,8 @@ Kubernetes目前支持json、yaml、protobuf三种数据格式的序列化和反
 #### 序列化器：对象 -> 字符串
 #### 反序列化器：字符串 -> 对象
 
+![](https://github.com/googs1025/k8s-client-go-api-demo/blob/main/image/serializer.jpg?raw=true)
+
 ```bigquery
 // Serializer是用于序列化和反序列化API对象的核心接口
 type Serializer interface {
