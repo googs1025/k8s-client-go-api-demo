@@ -1,13 +1,12 @@
 package statefulset
 
 import (
+	"fmt"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
-	"fmt"
-
-	appsv1 "k8s.io/api/apps/v1"
 	"context"
 	"errors"
+	appsv1 "k8s.io/api/apps/v1"
 )
 
 func CreateStatefulSets(kubeClient kubernetes.Interface, sfs *appsv1.StatefulSet, namespace string) (*appsv1.StatefulSet, error) {
