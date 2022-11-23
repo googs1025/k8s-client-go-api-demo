@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cdmtest
+spec:
+  selector:
+    matchLabels:
+      app: cmtest
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cmtest
+    spec:
+      serviceAccount: cmuser # 帐号，才能操作configmap
+      nodeName: vm-0-12-centos
+      containers:
+        - name: cmtest
+          image: alpine:3.12  # 用这个镜像编译时需要注意
+          imagePullPolicy: IfNotPresent
+          command: ["/app/cmtest"]
+          volumeMounts:
+            - name: app
+              mountPath: /app
+      volumes:
+        - name: app
+          hostPath:
+            path: /root/k8s-practice-demo/configmap
+
+# alpine镜像 需要用如下方式编译。
+# 注： docker run --rm -it -v /root/k8s-practice-demo/configmap:/app -w /app -e GOPROXY=https://goproxy.cn -e CGO_ENABLED=0  golang:1.18.7-alpine3.15 go build -o ./cmtest .
