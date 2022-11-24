@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: kube-state-metrics
+    app.kubernetes.io/version: 2.2.1
+  name: kube-state-metrics
+  namespace: kube-system
+spec:
+  #clusterIP: None
+  type: NodePort # 使用 <云服务器ip>:32280 访问
+  ports:
+  - name: http-metrics
+    port: 8080
+    targetPort: http-metrics
+    nodePort: 32280
+  - name: telemetry
+    port: 8081
+    targetPort: telemetry
+  selector:
+    app.kubernetes.io/name: kube-state-metrics
