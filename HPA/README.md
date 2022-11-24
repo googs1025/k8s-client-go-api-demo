@@ -1,3 +1,6 @@
+### HPA 简易实践
+在 Kubernetes 中，**HorizontalPodAutoscaler**自动更新工作负载资源(例如 Deployment 或者 StatefulSet)，目的是自动扩缩工作负载以满足需求。
+![](https://github.com/googs1025/k8s-client-go-api-demo/blob/main/HPA/img.png?raw=true)
 
 ### Metrics-Server
 k8s里。可以通过Metrics-Server服务采集节点和Pod的内存、磁盘、CPU和网络的使用率等。
@@ -8,7 +11,6 @@ Metrics API URI 为 /apis/metrics.k8s.io/。
 
 
 必须部署 metrics-server 才能使用该 API，metrics-server 通过调用 Kubelet Summary API 获取数据
-
 #### 部署 metrics-server
 ```bigquery
 # 需要vpn下载
