@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: usermetrics
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: usermetrics
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: usermetrics
+    spec:
+      nodeName: vm-0-16-centos
+      containers:
+        - name: usermetrics
+          image: alpine:3.12
+          imagePullPolicy: IfNotPresent
+          workingDir: /app
+          command: ["./usermetrics"]
+          volumeMounts:
+            - name: app
+              mountPath: /app
+          ports:
+            - containerPort: 8089
+      volumes:
+        - name: app
+          hostPath:
+             path: /home/custom_indicator
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: usermetrics
+  namespace: default
+  annotations: # prometheus 需要用的标签
+    scrape: "true" # 如果有这个scrape，prometheus才会抓取
+    nodeport: "31880"
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 8089
+      nodePort: 31880
+  selector:
+    app: usermetrics
+
+

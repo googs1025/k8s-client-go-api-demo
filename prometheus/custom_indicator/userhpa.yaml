@@ -1,0 +1,26 @@
+kind: HorizontalPodAutoscaler
+apiVersion: autoscaling/v2beta2
+metadata:
+  name: prodhpa
+spec:
+  scaleTargetRef:
+    # 指向我们之前创建过的 deploy
+    apiVersion: apps/v1
+    kind: Deployment
+    name: usermetrics
+  # 指定最小
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+  # 我们用的是service 模式  Resource Pods  Object
+  - type: Object
+    object:
+      metric:
+        name: jiang_user_visit
+      describedObject:
+        apiVersion: v1
+        kind: Service
+        name: usermetrics
+      target:
+        type: Value
+        value: 8000m
