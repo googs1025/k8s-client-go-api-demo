@@ -24,7 +24,11 @@
 3. Unstructure使用方法
 4. serialize序列使用方法
 ```
-
+#### 部署类
+```
+1. HPA自动扩缩容实践
+2. prometheus部署实践
+```
 
 
 
