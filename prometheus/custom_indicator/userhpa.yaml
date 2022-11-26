@@ -1,26 +1,27 @@
-kind: HorizontalPodAutoscaler
+kind: HorizontalPodAutoscaler # 创建一个HPA，用来测试配置的自定义指标，可以接入HPA扩缩容
 apiVersion: autoscaling/v2beta2
 metadata:
-  name: prodhpa
+  name: userhpa
 spec:
   scaleTargetRef:
     # 指向我们之前创建过的 deploy
     apiVersion: apps/v1
     kind: Deployment
     name: usermetrics
-  # 指定最小
+  # 指定最大最小
   minReplicas: 1
   maxReplicas: 3
   metrics:
-  # 我们用的是service 模式  Resource Pods  Object
+  # 我们用的是service 模式
+  # 还有其他模式如： Resource Pods  Object
   - type: Object
     object:
       metric:
-        name: jiang_user_visit
+        name: user_visit # metric指标，经由过滤后所以不是jiang_user_visit是user_visit
       describedObject:
         apiVersion: v1
         kind: Service
         name: usermetrics
       target:
         type: Value
-        value: 8000m
+        value: 8000m # 指标数值，超过就扩容

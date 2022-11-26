@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: adapter-config
   namespace: custom-metrics
-data:
+data: # 如下rule多增加一个规则，即自定义规则
   config.yaml: |
     rules:
     - seriesQuery: '{__name__=~"^jiang_.*",namespace!=""}'

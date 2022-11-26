@@ -35,7 +35,7 @@ kind: Service
 metadata:
   name: usermetrics
   namespace: default
-  annotations: # prometheus 需要用的标签
+  annotations: # prometheus 需要用的标签，prometheus自动服务发现时需要用到
     scrape: "true" # 如果有这个scrape，prometheus才会抓取
     nodeport: "31880"
 spec:

@@ -12,3 +12,18 @@ Histogram(累积直方图)
 
 Summary (摘要统计)
 和 直方图类似，也是样本观测。但是它提供了样本值的分位数、所有样本值的大小总和、样本总量
+
+### prometheus.yml文件中的配置方法：
+```bigquery
+[ source_labels: '[' <labelname> [, ...] ']' ] # 源标签从现有标签中选择值。
+[ regex: <regex> | default = (.*) ] # 与提取的值匹配的正则表达式。
+[ target_label: <labelname> ] # 被替换的标签。
+[ replacement: <string> | default = $1 ] # 替换值
+[ action: <relabel_action> | default = replace ]匹配执行的操作。 （ replace 、keep、drop、labelmap、labeldrop）
+```
+
+### keep和drop的作用
+当action设置为keep时，Prometheus会丢弃source_labels的值中没有匹配到regex正则表达式内容的Target实例，
+
+而当action设置为drop时，则会丢弃那些source_labels的值匹配到regex正则表达式内容的Target实例
+

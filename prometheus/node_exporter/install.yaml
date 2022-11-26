@@ -19,12 +19,12 @@ spec:
       labels:
         name: node-exporter
     spec:
-      hostPID: true
-      hostIPC: true
-      hostNetwork: true
+      hostPID: true # 控制 Pod 中容器是否可以共享宿主上的进程 ID 空间
+      hostIPC: true # 控制 Pod 容器是否可共享宿主上的 IPC  (进程通信)
+      hostNetwork: true # POD允许使用宿主机网络
       containers:
       - name: node-exporter
-        image: bitnami/node-exporter:1.2.2
+        image: bitnami/node-exporter:1.4.0
         ports:
         - containerPort: 9100
         resources:
@@ -34,8 +34,8 @@ spec:
           limits:
             cpu: 1000m
             memory: 1Gi
-        securityContext:
-          privileged: true
+        securityContext: # 安全上下文。
+          privileged: true # 容器以特权方式允许（为了能够访问宿主机所有设备）
         args:
         - --path.procfs
         - /host/proc
@@ -56,14 +56,14 @@ spec:
       - key: "node-role.kubernetes.io/master"
         operator: "Exists"
         effect: "NoSchedule"
-      volumes:
-        - name: proc
+      volumes: # 节点信息需要挂载到容器中
+        - name: proc # /proc –CPU信息、内存信息、内核信息等
           hostPath:
             path: /proc
-        - name: dev
+        - name: dev # /dev  ---存放与设备（包括外设）有关的文件
           hostPath:
             path: /dev
-        - name: sys
+        - name: sys # /sys --硬件设备的驱动程序信息
           hostPath:
             path: /sys
         - name: rootfs

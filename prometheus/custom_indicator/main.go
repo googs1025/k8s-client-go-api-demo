@@ -7,6 +7,10 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
+/*
+	使用prometheus自定义接口指标
+ */
+
 func init() {
 	prometheus.MustRegister(userVisit)
 }
@@ -26,17 +30,12 @@ func main() {
 	r.GET("/user/visit", func(c *gin.Context) {
 
 		userStr := c.Query("userid")
-		//_, err := strconv.Atoi(userStr)
-		//if err != nil {
-		//	c.JSON(400,gin.H{
-		//		"message":"error pid",
-		//	})
-		//}
+
 		fmt.Printf("the user is %s\n", userStr)
 
 		userVisit.With(prometheus.Labels{
 			"userid":userStr,
-		}).Inc()
+		}).Inc() // 访问量指标就增加一次
 
 		c.JSON(200,gin.H{
 			"message":"OK",
