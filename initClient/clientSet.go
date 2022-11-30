@@ -28,9 +28,19 @@ func K8sRestConfig() *rest.Config {
 	}
 	//flag.Parse()
 
-	config, err := clientcmd.BuildConfigFromFlags("", *kubeConfig)
-	if err != nil {
-		log.Panic(err.Error())
+	//config, err := clientcmd.BuildConfigFromFlags("", *kubeConfig)
+	//if err != nil {
+	//	log.Panic(err.Error())
+	//}
+
+	// 首先使用 inCluster 模式(需要去配置对应的 RBAC 权限，默认的sa是default->是没有获取deployments的List权限)
+	var config *rest.Config
+	config, err := rest.InClusterConfig()
+	if  err != nil {
+		// 使用 KubeConfig 文件创建集群配置 Config 对象
+		if config, err = clientcmd.BuildConfigFromFlags("", *kubeConfig); err != nil {
+			log.Fatal(err)
+		}
 	}
 
 
