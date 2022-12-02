@@ -10,6 +10,7 @@
 3. deployment操作事例
 4. statefulset操作事例
 5. service操作事例
+6. controller(内部资源对象)操作事例
 ```
 #### 操作类
 ```bigquery
@@ -28,6 +29,7 @@
 ```
 1. HPA自动扩缩容实践
 2. prometheus部署实践
+3. crd部署实践
 ```
 
 
