@@ -37,6 +37,7 @@ func TestWorkQueuePractice(t *testing.T) {
 	factory := dynamicinformer.NewFilteredDynamicSharedInformerFactory(
 		client, 5*time.Second, namespace, func(*metav1.ListOptions) {},
 	)
+	// 动态客户端资源读取
 	dynamicInformer := factory.ForResource(ConfigMapResource)
 	// 加入回调函数
 	dynamicInformer.Informer().AddEventHandler(cache.ResourceEventHandlerFuncs{
@@ -74,8 +75,8 @@ func TestWorkQueuePractice(t *testing.T) {
 	// informer 启动
 	factory.Start(ctx.Done())
 
-	// factory.Start() releases the execution flow without waiting for all the
-	// internal machinery to warm up.
+
+	// 当启动informer时，需要先等待资源同步
 	for gvr, ok := range factory.WaitForCacheSync(ctx.Done()) {
 		if !ok {
 			log.Fatal(fmt.Sprintf("Failed to sync cache for resource %v", gvr))
@@ -99,7 +100,7 @@ func TestWorkQueuePractice(t *testing.T) {
 				default:
 				}
 
-				// Obtain a piece of work.
+				// 从worker中取出资源
 				key, quit := queue.Get()
 				if quit {
 					fmt.Printf("Work queue has been shut down! Worker %d exiting...\n", n)
@@ -139,18 +140,16 @@ func TestWorkQueuePractice(t *testing.T) {
 						return
 					}
 
-					// We retry no more than K=5 times.
+					// 重试次数如果超过一定次数，直接抛弃不要
 					if queue.NumRequeues(key) >= 5 {
 						fmt.Printf("Worker %d gave up on processing %s. Removing it from the queue.\n", n, key)
 						queue.Forget(key)
 						return
 					}
 
-					// Re-enqueue the key rate to be (re-)processed later again.
-					// Notice that deferred queue.Done(key) call above knows how
-					// to deal with re-enqueueing - it marks the key as done and
-					// then re-appends it again.
+
 					fmt.Printf("Worker %d failed to process %s. Putting it back to the queue to retry later.\n", n, key)
+					// 重新入队列
 					queue.AddRateLimited(key)
 				}()
 			}
@@ -173,7 +172,7 @@ func TestWorkQueuePractice(t *testing.T) {
 
 	// Stay for a couple more seconds to let the program finish.
 	time.Sleep(10 * time.Second)
-	queue.ShutDown()
+	queue.ShutDown() // 关闭队列
 	cancel()
 	time.Sleep(1 * time.Second)
 
@@ -209,7 +208,7 @@ func createConfigMap(client dynamic.Interface) *unstructured.Unstructured {
 		Create(context.Background(), cm, metav1.CreateOptions{})
 
 	if err != nil {
-		fmt.Println("create configmap err: ",err)
+		fmt.Println("create err: ",err)
 		return cm
 	}
 	fmt.Printf("create configmap: name %s, labels %s \n", cm.GetName(), cm.GetLabels())
@@ -231,7 +230,7 @@ func deleteConfigMap(client dynamic.Interface, cm *unstructured.Unstructured) {
 		fmt.Println("delete err: ", err)
 	}
 
-	fmt.Println("delelte configmap", cm.GetName())
+	fmt.Println("delete configmap", cm.GetName())
 
 
 }

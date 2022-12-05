@@ -12,7 +12,7 @@ import (
 func CreateStatefulSets(kubeClient kubernetes.Interface, sfs *appsv1.StatefulSet, namespace string) (*appsv1.StatefulSet, error) {
 	statefulSets, err := GetStatefulSets(kubeClient, namespace, sfs.Name)
 	if statefulSets != nil {
-		fmt.Println("statefulset已经被创建，退出。")
+		fmt.Println("StatefulSets已经被创建，退出。")
 		return statefulSets, nil
 	}
 	if err != nil {
@@ -22,7 +22,7 @@ func CreateStatefulSets(kubeClient kubernetes.Interface, sfs *appsv1.StatefulSet
 
 	sfs, err = kubeClient.AppsV1().StatefulSets(namespace).Create(context.Background(), sfs, metav1.CreateOptions{})
 	if err != nil {
-		return nil, errors.New("statefulSets 创建 error")
+		return nil, errors.New("StatefulSets 创建 error")
 	}
 	return sfs, nil
 

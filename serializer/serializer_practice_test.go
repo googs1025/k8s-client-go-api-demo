@@ -46,6 +46,7 @@ var (
 			},
 		},
 	}
+	// yaml 字符串
 	yConfigMap = `---
 apiVersion: v1
 data:

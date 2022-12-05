@@ -23,6 +23,7 @@
 2. field字段使用方法
 3. Unstructure使用方法
 4. serialize序列使用方法
+5. patch更新使用方法
 ```
 #### 部署类
 ```
