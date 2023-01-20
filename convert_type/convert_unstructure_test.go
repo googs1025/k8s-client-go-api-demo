@@ -1,4 +1,4 @@
-package convert_unstructure_type
+package convert_type
 
 import (
 	corev1 "k8s.io/api/core/v1"
@@ -8,8 +8,9 @@ import (
 	"testing"
 )
 
-func TestConvertType(t *testing.T) {
+func TestConvertUnstructuredType(t *testing.T) {
 
+	// unstructured结构对象
 	unstructuredConfigMap := unstructured.Unstructured{
 		Object: map[string]interface{}{
 			"apiVersion": "v1",
@@ -27,6 +28,7 @@ func TestConvertType(t *testing.T) {
 
 	// Unstructured -> Typed
 	var typeConfigMap corev1.ConfigMap
+	// 转换成结构对象
 	err := runtime.DefaultUnstructuredConverter.FromUnstructured(unstructuredConfigMap.Object, &typeConfigMap)
 	if err != nil {
 		panic(err.Error())

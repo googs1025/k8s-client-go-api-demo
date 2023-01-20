@@ -3,7 +3,7 @@ package dynamic
 import (
 	"context"
 	"fmt"
-	"k8s-api-practice/initClient"
+	"k8s-api-practice/initclient"
 	v1 "k8s.io/api/apps/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -13,7 +13,7 @@ import (
 
 func TestDynamicClient1(t *testing.T) {
 
-	client := initClient.ClientSet.DynamicClient
+	client := initclient.ClientSet.DynamicClient
 
 	namespace := "default"
 	res := schema.GroupVersionResource{

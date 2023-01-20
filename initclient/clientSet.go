@@ -1,4 +1,4 @@
-package initClient
+package initclient
 
 import (
 	"flag"

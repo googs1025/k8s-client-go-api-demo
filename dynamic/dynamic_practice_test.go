@@ -3,7 +3,7 @@ package dynamic
 import (
 	"context"
 	"fmt"
-	"k8s-api-practice/initClient"
+	"k8s-api-practice/initclient"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -18,7 +18,7 @@ import (
 
 func TestDynamicClient(t *testing.T) {
 
-	client := initClient.ClientSet.DynamicClient
+	client := initclient.ClientSet.DynamicClient
 
 	namespace := "default"
 	// unstructure 的组合GVR，区分资源对象

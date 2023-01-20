@@ -3,7 +3,7 @@ package patch
 import (
 	"context"
 	"fmt"
-	"k8s-api-practice/initClient"
+	"k8s-api-practice/initclient"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
@@ -30,7 +30,7 @@ func AddJsonPatch1(jps ...*JSONPatch1) JSONPatchList1 {
 func TestPatchPractice3(t *testing.T) {
 	ctx := context.Background()
 	// 动态客户端
-	dynamicClient := initClient.ClientSet.DynamicClient
+	dynamicClient := initclient.ClientSet.DynamicClient
 	patchPost := AddJsonPatch1(&JSONPatch1{
 		Op: "remove",
 		Path: "/spec/template/spec/containers/1",

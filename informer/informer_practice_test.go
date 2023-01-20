@@ -2,7 +2,7 @@ package informer
 
 import (
 	"fmt"
-	"k8s-api-practice/initClient"
+	"k8s-api-practice/initclient"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/client-go/informers"
 	"k8s.io/client-go/tools/cache"
@@ -10,7 +10,7 @@ import (
 )
 
 func InformerPractice() {
-	client := initClient.ClientSet.Client
+	client := initclient.ClientSet.Client
 
 	factory := informers.NewSharedInformerFactoryWithOptions(client, 0, informers.WithNamespace("default"))
 	// 不同informer可直接在 factory中同时监听。注意：需要创建eventHandler。

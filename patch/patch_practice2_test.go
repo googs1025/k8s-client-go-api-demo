@@ -4,7 +4,7 @@ import (
 	"context"
 	_ "embed"
 	"fmt"
-	"k8s-api-practice/initClient"
+	"k8s-api-practice/initclient"
 	"k8s.io/apimachinery/pkg/util/json"
 	"testing"
 
@@ -35,7 +35,7 @@ func AddJsonPatch(jps ...*JSONPatch) JSONPatchList {
 
 func TestPatchPractice2(t *testing.T) {
 	ctx := context.Background()
-	client := initClient.ClientSet.Client
+	client := initclient.ClientSet.Client
 
 	var mgo, err = client.AppsV1().Deployments("default").
 		Get(ctx, "patch-deployment", metav1.GetOptions{})

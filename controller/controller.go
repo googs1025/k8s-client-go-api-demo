@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"k8s-api-practice/initClient"
+	"k8s-api-practice/initclient"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/fields"
@@ -131,7 +131,7 @@ func (c *Controller) handleErr(err error, key interface{}) {
 
 
 func main() {
-	client := initClient.ClientSet.Client
+	client := initclient.ClientSet.Client
 	// 创建 资源 ListWatcher
 	podListWatcher := cache.NewListWatchFromClient(client.CoreV1().RESTClient(), "pods", v1.NamespaceDefault, fields.Everything())
 	// 创建队列

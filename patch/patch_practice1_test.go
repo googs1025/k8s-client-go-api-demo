@@ -3,7 +3,7 @@ package patch
 import (
 	"context"
 	"fmt"
-	"k8s-api-practice/initClient"
+	"k8s-api-practice/initclient"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/json"
@@ -13,7 +13,7 @@ import (
 
 func TestPatchPractice1(t *testing.T) {
 	ctx := context.Background()
-	client := initClient.ClientSet.Client //获取 clientset
+	client := initclient.ClientSet.Client //获取 clientset
 	var patchDeployment, err = client.AppsV1().Deployments("default").
 		Get(ctx, "patch-deployment", metav1.GetOptions{})
 	if err != nil{

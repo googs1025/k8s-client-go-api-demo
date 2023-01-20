@@ -1,9 +1,9 @@
-package fakeClientTest
+package fakeclientTest
 
 import (
 	"context"
 	"fmt"
-	. "golanglearning/new_project/k8s-api-practice/initClient"
+	. "golanglearning/new_project/k8s-api-practice/initclient"
 	v1 "k8s.io/api/core/v1"
 	v12 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes/fake"
