@@ -16,3 +16,9 @@ type GroupVersionKind struct {
 	Kind    string
 }
 ```
+
+#### 动态客户端注意事项
+1. GVR对象定义：schema.GroupVersionResource
+2. Unstructured对象定义：unstructured.Unstructured
+3. dynamic client客户端调用
+4. CRUD

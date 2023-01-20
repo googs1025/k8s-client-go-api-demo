@@ -36,7 +36,15 @@ add,replace,remove
 字符串格式 [{ "op": "replace", "path": "/xxx/xxx", "value": "xxx" }]
 ```
 
+#### 测试
+```bigquery
+kubectl apply -f patch-deployment.yaml
+go clean -testcache #
+go test -v patch_practice1_test.go 
+```
+
 #### 参考文档：
 ````bigquery
 https://kubernetes.io/zh-cn/docs/tasks/manage-kubernetes-objects/update-api-object-kubectl-patch/#use-a-json-merge-patch-to-update-a-deployment
 ````
+

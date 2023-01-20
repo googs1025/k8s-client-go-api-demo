@@ -29,7 +29,7 @@ func AddJsonPatch1(jps ...*JSONPatch1) JSONPatchList1 {
 
 func TestPatchPractice3(t *testing.T) {
 	ctx := context.Background()
-	//动态客户端
+	// 动态客户端
 	dynamicClient := initClient.ClientSet.DynamicClient
 	patchPost := AddJsonPatch1(&JSONPatch1{
 		Op: "remove",
@@ -39,6 +39,7 @@ func TestPatchPractice3(t *testing.T) {
 			"image":"redis:5-alpine",
 		},
 	})
+
 	gvr := schema.GroupVersionResource{
 		Resource: "deployments",
 		Version: "v1",

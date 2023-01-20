@@ -21,12 +21,14 @@ func TestDynamicClient(t *testing.T) {
 	client := initClient.ClientSet.DynamicClient
 
 	namespace := "default"
+	// unstructure 的组合GVR，区分资源对象
 	res := schema.GroupVersionResource{
 		Group: "",
 		Version: "v1",
 		Resource: "configmaps",
 	}
 
+	// Unstructured对象定义
 	unstructuredObj := &unstructured.Unstructured{
 		Object: map[string]interface{}{
 			"apiVersion": "v1",
