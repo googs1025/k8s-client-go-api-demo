@@ -2,20 +2,19 @@ package convert_type
 
 import (
 	"fmt"
+	appsv1 "k8s.io/api/apps/v1"
+	appsv1beta1 "k8s.io/api/apps/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	//"k8s.io/kubernetes/pkg/apis/apps"
 	"testing"
-	appsv1beta1 "k8s.io/api/apps/v1beta1"
-	appsv1 "k8s.io/api/apps/v1"
-	"k8s.io/kubernetes/pkg/apis/apps"
-
 )
 
 func TestConvertInternalType(t *testing.T) {
 	scheme := runtime.NewScheme()
 	scheme.AddKnownTypes(appsv1beta1.SchemeGroupVersion, &appsv1beta1.Deployment{})
 	scheme.AddKnownTypes(appsv1.SchemeGroupVersion, &appsv1.Deployment{})
-	scheme.AddKnownTypes(apps.SchemeGroupVersion, &appsv1.Deployment{})
+	//scheme.AddKnownTypes(appsv1.SchemeGroupVersion, &appsv1.Deployment{})
 
 	metav1.AddToGroupVersion(scheme, appsv1beta1.SchemeGroupVersion)
 	metav1.AddToGroupVersion(scheme, appsv1.SchemeGroupVersion)
@@ -28,13 +27,12 @@ func TestConvertInternalType(t *testing.T) {
 	}
 
 	// v1 ----> internal版本
-	objInternal, err := scheme.ConvertToVersion(v1beta1Deployment, apps.SchemeGroupVersion)
+	objInternal, err := scheme.ConvertToVersion(v1beta1Deployment, appsv1beta1.SchemeGroupVersion)
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Println("GVK: ", objInternal.GetObjectKind().GroupVersionKind().String())
-
 
 	// internal版本  ----> v1 版本
 	objV1, err := scheme.ConvertToVersion(objInternal, appsv1.SchemeGroupVersion)
@@ -51,5 +49,6 @@ func TestConvertInternalType(t *testing.T) {
 	}
 
 	fmt.Println("GVK: ", v1beta1Deployment.GetObjectKind().GroupVersionKind().String())
+	fmt.Println("GVK: ", v1Deployment.GetObjectKind().GroupVersionKind().String())
 
 }

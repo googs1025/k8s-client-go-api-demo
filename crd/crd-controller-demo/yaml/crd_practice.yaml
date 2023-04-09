@@ -14,10 +14,10 @@ spec:
     schema:  # 定义自定义对象的声明规范
       openAPIV3Schema:
         description: Define CronTab YAML Spec
-        type: object
+        type: runtime
         properties:
           spec:
-            type: object
+            type: runtime
             properties:
               cronSpec:
                 type: string

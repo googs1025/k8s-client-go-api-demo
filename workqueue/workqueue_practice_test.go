@@ -119,13 +119,13 @@ func TestWorkQueuePractice(t *testing.T) {
 					// YOUR CONTROLLER'S BUSINESS LOGIC GOES HERE
 					obj, err := dynamicInformer.Lister().Get(key.(string))
 					if err == nil {
-						fmt.Printf("Worker %d found ConfigMap object in informer's cahce %#v.\n", n, obj)
+						fmt.Printf("Worker %d found ConfigMap runtime in informer's cahce %#v.\n", n, obj)
 						// RECONCILE THE OBJECT - PUT YOUR BUSINESS LOGIC HERE.
 						if n == 1 {
 							err = fmt.Errorf("worker %d is a chronic failure", n)
 						}
 					} else {
-						fmt.Printf("Worker %d got error %v while looking up ConfigMap object in informer's cache.\n", n, err)
+						fmt.Printf("Worker %d got error %v while looking up ConfigMap runtime in informer's cache.\n", n, err)
 					}
 
 					// Handle the error if something went wrong during the execution of

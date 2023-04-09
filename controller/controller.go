@@ -91,7 +91,7 @@ func (c *Controller) syncToStdout(key string) error {
 	// 从本地存储中获取 key 对应的对象
 	obj, exists, err := c.indexer.GetByKey(key)
 	if err != nil {
-		klog.Errorf("Fetching object with key %s from store failed with %v", key, err)
+		klog.Errorf("Fetching runtime with key %s from store failed with %v", key, err)
 		return err
 	}
 

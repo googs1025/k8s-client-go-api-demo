@@ -110,6 +110,7 @@ func GetPodCondition(status *v1.PodStatus, conditionType v1.PodConditionType) (i
 func WaitForPodSelector(client *kubernetes.Clientset, namespace string, options metav1.ListOptions,
 	timeout time.Duration) error {
 	w, err := client.CoreV1().Pods(namespace).Watch(context.Background(), options)
+
 	if err != nil {
 		return err
 	}
