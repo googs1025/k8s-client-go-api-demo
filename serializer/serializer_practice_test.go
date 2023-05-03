@@ -147,7 +147,6 @@ func TestSerializeToYamlPractice(t *testing.T) {
 	fmt.Printf("Deserialized %#v\n", decoded)
 }
 
-
 func TestUnstructuredToJson(t *testing.T) {
 
 	// 非结构化 -> JSON (选项一)
@@ -184,7 +183,6 @@ func TestUnstructuredToJson(t *testing.T) {
 
 }
 
-
 func TestUnstructuredToYaml(t *testing.T) {
 
 	// YAML -> Unstructured (through JSON)
@@ -207,11 +205,4 @@ func TestUnstructuredToYaml(t *testing.T) {
 		panic("Unexpected configmap data")
 	}
 
-
 }
-
-
-
-
-
-

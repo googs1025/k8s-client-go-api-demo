@@ -11,9 +11,9 @@ import (
 )
 
 type JsonPatch struct {
-	Op 		string	`json:"op"`
-	Path 	string	`json:"path"`
-	Value 	map[string]string	`json:"value,omitempty"`
+	Op    string            `json:"op"`
+	Path  string            `json:"path"`
+	Value map[string]string `json:"value,omitempty"`
 }
 
 type JsonPatchList []*JsonPatch
@@ -28,7 +28,6 @@ func AddJsonPatch(jps ...*JsonPatch) JsonPatchList {
 	return list
 }
 
-
 func PatchPod(pod *v1.Pod, client kubernetes.Interface) error {
 	// 需要确保annotations
 	//list := AddJsonPatch(&JsonPatch{
@@ -37,7 +36,7 @@ func PatchPod(pod *v1.Pod, client kubernetes.Interface) error {
 	//	Value: "1.0",
 	//})
 	list := AddJsonPatch(&JsonPatch{
-		Op: "add",
+		Op:   "add",
 		Path: "/metadata/annotations",
 		Value: map[string]string{
 			"version": "1.0",

@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"k8s-api-practice/scheme/apple"
 	"k8s-api-practice/scheme/product"
-	"k8s-api-practice/scheme/scheme"
 	"k8s-api-practice/scheme/runtime"
+	"k8s-api-practice/scheme/scheme"
 )
 
 var sh = scheme.NewScheme()
 
-// 初始化 需要注册
+// 初始化需要注册
 var localSchemeBuilder = scheme.SchemeBuilder{
 	product.AddToScheme,
 	apple.AddToScheme,
@@ -35,7 +35,4 @@ func main() {
 
 	fmt.Println(aa.GroupVersionKind())
 
-
 }
-
-

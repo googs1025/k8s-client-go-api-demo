@@ -6,14 +6,12 @@ import (
 	"strings"
 )
 
-
 type Food struct {
-	ApiVersion string       `json:"apiVersion" yaml:"apiVersion"`
-	Kind 	   string  		`json:"kind" yaml:"kind"`
-	Metadata   				`json:"metadata" yaml:"metadata"`
-	Spec 	   FoodSpec    `json:"spec" yaml:"spec"`
-	Status     FoodStatus  `json:"status" yaml:"status"`
-
+	ApiVersion string `json:"apiVersion" yaml:"apiVersion"`
+	Kind       string `json:"kind" yaml:"kind"`
+	Metadata   `json:"metadata" yaml:"metadata"`
+	Spec       FoodSpec   `json:"spec" yaml:"spec"`
+	Status     FoodStatus `json:"status" yaml:"status"`
 }
 
 type Metadata struct {
@@ -21,15 +19,15 @@ type Metadata struct {
 }
 
 type FoodSpec struct {
-	Size   	   string			`json:"size" yaml:"size"`
-	Price  	   string			`json:"price" yaml:"price"`
-	Place      string			`json:"place" yaml:"place"`
-	Color      string			`json:"color" yaml:"color"`
+	Size  string `json:"size" yaml:"size"`
+	Price string `json:"price" yaml:"price"`
+	Place string `json:"place" yaml:"place"`
+	Color string `json:"color" yaml:"color"`
 }
 
 type FoodStatus struct {
 	//CreateTime time.Time
-	Status     string
+	Status string
 }
 
 type FoodList struct {
@@ -51,22 +49,20 @@ func (f *Food) GroupVersionKind() runtime.GroupVersionKind {
 	var s runtime.GroupVersionKind
 	if len(res) < 2 {
 		s = runtime.GroupVersionKind{
-			Group: "",
+			Group:   "",
 			Version: res[0],
-			Kind: f.Kind,
+			Kind:    f.Kind,
 		}
 
 	} else {
 		s = runtime.GroupVersionKind{
-			Group: res[0],
+			Group:   res[0],
 			Version: res[1],
-			Kind: f.Kind,
+			Kind:    f.Kind,
 		}
 	}
 	return s
 }
-
-
 
 func (f *Food) GetObjectKind(g runtime.GroupVersionKind) (runtime.ObjectKind, error) {
 	f.SetGroupVersionKind(g)
@@ -84,7 +80,7 @@ var (
 func addKnownTypes(scheme *scheme.Scheme) error {
 	f := &Food{
 		ApiVersion: "v1",
-		Kind: "Food",
+		Kind:       "Food",
 	}
 	scheme.AddKnownTypes(SchemeGroupVersion, f)
 	return nil

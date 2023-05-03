@@ -18,11 +18,11 @@ import (
 )
 
 var (
-	namespace = "default"
-	label = "informer-dynamic-simple-" + rand.String(5)
+	namespace         = "default"
+	label             = "informer-dynamic-simple-" + rand.String(5)
 	ConfigMapResource = schema.GroupVersionResource{
-		Group: "",
-		Version: "v1",
+		Group:    "",
+		Version:  "v1",
 		Resource: "configmaps",
 	}
 )
@@ -65,7 +65,6 @@ func deleteConfigMap(client dynamic.Interface, cm *unstructured.Unstructured) {
 	fmt.Printf("Deleted ConfigMap %s/%s\n", cm.GetNamespace(), cm.GetName())
 }
 
-
 func TestDynamicInformer(t *testing.T) {
 
 	// dynamic客户端
@@ -98,7 +97,6 @@ func TestDynamicInformer(t *testing.T) {
 	fmt.Println("------开始使用informer监听------------")
 	factory.Start(ctx.Done())
 
-
 	for gvr, ok := range factory.WaitForCacheSync(ctx.Done()) {
 		if !ok {
 			log.Fatal(fmt.Sprintf("Failed to sync cache for resource %v", gvr))
@@ -110,7 +108,7 @@ func TestDynamicInformer(t *testing.T) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	list, err := dynamicInformer.Lister().List(selector)	// 使用informer list，不从api server
+	list, err := dynamicInformer.Lister().List(selector) // 使用informer list，不从api server
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -128,6 +126,3 @@ func TestDynamicInformer(t *testing.T) {
 	// 阻塞，可以发现 定时会有update事件，这是同步更新的状态
 	select {}
 }
-
-
-

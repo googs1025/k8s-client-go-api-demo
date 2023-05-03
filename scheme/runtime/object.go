@@ -14,4 +14,3 @@ type GroupVersionKind struct {
 	Version string
 	Kind    string
 }
-

@@ -42,7 +42,7 @@ func TestConvertUnstructuredType(t *testing.T) {
 	if err != nil {
 		panic(err.Error())
 	}
-	if !reflect.DeepEqual(unstructured.Unstructured{Object: object}, unstructuredConfigMap ) {
+	if !reflect.DeepEqual(unstructured.Unstructured{Object: object}, unstructuredConfigMap) {
 		panic("Unstructured config map has unexpected data")
 	}
 }

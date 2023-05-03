@@ -106,15 +106,14 @@ func getRsIdsByDeployment(dep *appv1.Deployment, clientSet *kubernetes.Clientset
 	return ret
 }
 
-
 // UpgradePodImage 原地升级pod镜像
 func UpgradePodByImage(pod *v1.Pod, images ...string) {
 	clientSet := K8sClient()
 	patchList := make([]*patchOperation, 0)
 	for k, image := range images {
 		p := &patchOperation{
-			Op: "replace",
-			Path: fmt.Sprintf("/spec/containers/%v/image", k),
+			Op:    "replace",
+			Path:  fmt.Sprintf("/spec/containers/%v/image", k),
 			Value: image,
 		}
 		patchList = append(patchList, p)
@@ -163,7 +162,6 @@ func RestartPodByImage(pod *v1.Pod) {
 	patch := fmt.Sprintf(`[{"op": "replace", "path": "/spec/containers/0/image", "value": "%v"}]`, randomImage)
 	patchBytes := []byte(patch)
 
-
 	jsonPatch, err := jsonpatch.DecodePatch(patchBytes)
 	if err != nil {
 		klog.Error("DecodePatch error: ", err)
@@ -200,10 +198,8 @@ func RestartPodByImage(pod *v1.Pod) {
 	}
 	_, err = clientSet.CoreV1().Pods(pod.Namespace).
 		Patch(context.TODO(), pod.Name, types.JSONPatchType,
-		restartJsonPatchBytes, metav1.PatchOptions{})
+			restartJsonPatchBytes, metav1.PatchOptions{})
 	if err != nil {
 		log.Fatalln(err)
 	}
 }
-
-

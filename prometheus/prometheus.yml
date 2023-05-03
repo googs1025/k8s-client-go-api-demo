@@ -1,13 +1,20 @@
 global:
+  # 全局的抓取间隔（scrape_interval），
+  # 即Prometheus将每隔5秒抓取一次指标数据。
   scrape_interval: 5s
 
+# 抓取配置（scrape_configs）
 scrape_configs:
+  # 抓取job名
   - job_name: 'prometheus-state-metrics'
     static_configs:
-      - targets: ['<ip>:32280']
+      - targets: ['<ip>:32280'] # 需要指定ip:port
   - job_name: 'node-exporter'
     static_configs:
       - targets: ['<节点一ip>:9100','<节点二ip>:9100']
+  # 用于从 Kubernetes 集群的节点抓取指标
+  # 指定了 Kubernetes 的 API 服务器地址、
+  # 角色为节点（role: node）、使用的身份验证令牌文件、TLS 配置
   - job_name: 'k8s-node'
     metrics_path: /metrics
     kubernetes_sd_configs:
@@ -18,12 +25,14 @@ scrape_configs:
           ca_file: /config/ca.crt
           # insecure_skip_verify: true # 如果不使用ca.crt 使用这个方式，
     relabel_configs: # 修改端口操作
+    # 定义了修改标签（relabel）的操作，用于将节点的默认端口 10250 替换为 9100。
       - source_labels: [ __address__ ]
         regex: '(.*):10250'
         replacement: '${1}:9100'
         target_label: __address__
         action: replace
-
+  # 用于从 Kubernetes 集群的 kubelet 上抓取指标
+  # 它指定了使用 HTTPS 方案、身份验证令牌文件、TLS 配置等。
   - job_name: 'k8s-kubelet'
     scheme: https
     bearer_token_file: /config/sa.token
@@ -48,6 +57,8 @@ scrape_configs:
 #    static_configs:
 #      - targets: ['10.0.0.16:31880']
 
+  # 用于自动发现 Kubernetes 集群中的服务，并抓取指标。
+  # 它指定了使用 HTTPS 方案、API 服务器地址、角色为服务（role: service）、身份验证令牌文件、TLS 配置
   - job_name: 'jiang-svc-auto'
     kubernetes_sd_configs:
       - api_server: https://10.0.0.16:6443/

@@ -21,7 +21,7 @@ func TestConvertInternalType(t *testing.T) {
 
 	v1beta1Deployment := &appsv1beta1.Deployment{
 		TypeMeta: metav1.TypeMeta{
-			Kind: "Deployment",
+			Kind:       "Deployment",
 			APIVersion: "apps/v1beta1",
 		},
 	}
@@ -41,7 +41,6 @@ func TestConvertInternalType(t *testing.T) {
 	}
 
 	fmt.Println("GVK: ", objV1.GetObjectKind().GroupVersionKind().String())
-
 
 	v1Deployment, ok := objV1.(*appsv1.Deployment)
 	if !ok {

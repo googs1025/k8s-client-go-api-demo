@@ -20,7 +20,7 @@ func TestWatchResource(t *testing.T) {
 	watch, err := client.CoreV1().ConfigMaps(configmap1.Namespace).
 		Watch(context.Background(), metav1.ListOptions{
 			LabelSelector: "app==configmapTest",
-	})
+		})
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -42,9 +42,7 @@ func TestWatchResource(t *testing.T) {
 	watch.Stop()
 	time.Sleep(1 * time.Second)
 
-
 }
-
 
 func createConfigMap(client kubernetes.Interface) *corev1.ConfigMap {
 
@@ -61,14 +59,12 @@ func createConfigMap(client kubernetes.Interface) *corev1.ConfigMap {
 	cm.SetLabels(labels)
 	cm, err := client.CoreV1().ConfigMaps(cm.Namespace).Create(context.Background(), cm, metav1.CreateOptions{})
 	if err != nil {
-		fmt.Println("create configmap err: ",err)
+		fmt.Println("create configmap err: ", err)
 		return cm
 	}
 	fmt.Printf("create configmap: name %s, labels %s \n", cm.GetName(), cm.GetLabels())
 
-
 	return cm
-
 
 }
 
@@ -80,6 +76,5 @@ func deleteConfigMap(client kubernetes.Interface, cm *corev1.ConfigMap) {
 	}
 
 	fmt.Println("delelte configmap", cm.GetName())
-
 
 }

@@ -1,12 +1,10 @@
 package main
 
-
 import (
 	"fmt"
 	"github.com/casbin/casbin"
 	"github.com/gin-gonic/gin"
 	"net/http"
-
 )
 
 var Enforcer *casbin.Enforcer
@@ -16,22 +14,16 @@ func init() {
 }
 
 // 初始化casbin
-func CasbinSetup(){
+func CasbinSetup() {
 
 	e := casbin.NewEnforcer("./rbac_models.conf")
 
-
 	Enforcer = e
-
-
 
 	// setup session store
 
-
 	//return e
 }
-
-
 
 func Hello(c *gin.Context) {
 	fmt.Println("Hello 接收到GET请求..")
@@ -42,11 +34,9 @@ func Hello(c *gin.Context) {
 	})
 }
 
-
 func main() {
 	//获取router路由对象
 	r := gin.New()
-
 
 	// 增加policy
 	r.GET("/api/v1/add", func(c *gin.Context) {
@@ -66,7 +56,7 @@ func main() {
 			fmt.Println("删除成功")
 		}
 	})
-	//获取policy
+	// 获取policy
 	r.GET("/api/v1/get", func(c *gin.Context) {
 		fmt.Println("查看policy")
 		list := Enforcer.GetPolicy()
@@ -77,25 +67,15 @@ func main() {
 		}
 	})
 
-	//使用自定义拦截器中间件
+	// 使用自定义拦截器中间件
 	r.Use(Authorize())
 
-
-
-
-	//创建请求
+	// 创建请求
 	r.GET("/api/v1/hello", Hello)
 	r.Run(":9000") //参数为空 默认监听8080端口
 }
 
-
-
-
-
-//拦截器
-
-
-
+// 拦截器
 
 func Authorize() gin.HandlerFunc {
 

@@ -17,8 +17,8 @@ func TestDynamicClient1(t *testing.T) {
 
 	namespace := "default"
 	res := schema.GroupVersionResource{
-		Group: "",
-		Version: "v1",
+		Group:    "",
+		Version:  "v1",
 		Resource: "configmaps",
 	}
 

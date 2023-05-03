@@ -6,14 +6,12 @@ import (
 	"strings"
 )
 
-
 type Apple struct {
-	ApiVersion string       `json:"apiVersion" yaml:"apiVersion"`
-	Kind 	   string  		`json:"kind" yaml:"kind"`
-	Metadata   				`json:"metadata" yaml:"metadata"`
-	Spec 	   AppleSpec    `json:"spec" yaml:"spec"`
-	Status     AppleStatus  `json:"status" yaml:"status"`
-
+	ApiVersion string `json:"apiVersion" yaml:"apiVersion"`
+	Kind       string `json:"kind" yaml:"kind"`
+	Metadata   `json:"metadata" yaml:"metadata"`
+	Spec       AppleSpec   `json:"spec" yaml:"spec"`
+	Status     AppleStatus `json:"status" yaml:"status"`
 }
 
 type Metadata struct {
@@ -21,15 +19,15 @@ type Metadata struct {
 }
 
 type AppleSpec struct {
-	Size   	   string			`json:"size" yaml:"size"`
-	Price  	   string			`json:"price" yaml:"price"`
-	Place      string			`json:"place" yaml:"place"`
-	Color      string			`json:"color" yaml:"color"`
+	Size  string `json:"size" yaml:"size"`
+	Price string `json:"price" yaml:"price"`
+	Place string `json:"place" yaml:"place"`
+	Color string `json:"color" yaml:"color"`
 }
 
 type AppleStatus struct {
 	//CreateTime time.Time
-	Status     string
+	Status string
 }
 
 type AppleList struct {
@@ -50,22 +48,20 @@ func (f *Apple) GroupVersionKind() runtime.GroupVersionKind {
 	var s runtime.GroupVersionKind
 	if len(res) < 2 {
 		s = runtime.GroupVersionKind{
-			Group: "",
+			Group:   "",
 			Version: res[0],
-			Kind: f.Kind,
+			Kind:    f.Kind,
 		}
 
 	} else {
 		s = runtime.GroupVersionKind{
-			Group: res[0],
+			Group:   res[0],
 			Version: res[1],
-			Kind: f.Kind,
+			Kind:    f.Kind,
 		}
 	}
 	return s
 }
-
-
 
 func (f *Apple) GetObjectKind(g runtime.GroupVersionKind) (runtime.ObjectKind, error) {
 	f.SetGroupVersionKind(g)
@@ -83,13 +79,8 @@ var (
 func addKnownTypes(scheme *scheme.Scheme) error {
 	f := &Apple{
 		ApiVersion: "apps/v1",
-		Kind: "Apple",
+		Kind:       "Apple",
 	}
 	scheme.AddKnownTypes(SchemeGroupVersion, f)
 	return nil
 }
-
-
-
-
-

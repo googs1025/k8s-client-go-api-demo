@@ -8,11 +8,11 @@ import (
 )
 
 type User struct {
-	Id   	  int    `json:"-"`
-	Name 	  string `json:"name"`
-	Age  	  int 	`json:"age"`
+	Id        int    `json:"-"`
+	Name      string `json:"name"`
+	Age       int    `json:"age"`
 	QQ        string `json:"qq"`
-	LastApply string  `json:"-"`
+	LastApply string `json:"-"`
 }
 
 func (u *User) Empty() bool {
@@ -28,19 +28,17 @@ func (u *User) ToJson() []byte {
 	return res
 }
 
-
-
 func main() {
 
 	user1 := &User{
 		Name: "jiang",
-		Age: 19,
-		QQ: "aaaaa",
+		Age:  19,
+		QQ:   "aaaaa",
 	}
 	user2 := &User{
 		Name: "jiang",
-		Age: 20,
-		QQ: "ddkfjal;df",
+		Age:  20,
+		QQ:   "ddkfjal;df",
 	}
 	// 原对象
 	user3 := &User{
@@ -52,6 +50,6 @@ func main() {
 	fmt.Println(string(patch))
 
 	// 把patch 放入原对象
-	newuser, _ :=jsonpatch.MergePatch(user3.ToJson(), patch)
+	newuser, _ := jsonpatch.MergePatch(user3.ToJson(), patch)
 	fmt.Println(string(newuser))
 }

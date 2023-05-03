@@ -75,7 +75,6 @@ func TestWorkQueuePractice(t *testing.T) {
 	// informer 启动
 	factory.Start(ctx.Done())
 
-
 	// 当启动informer时，需要先等待资源同步
 	for gvr, ok := range factory.WaitForCacheSync(ctx.Done()) {
 		if !ok {
@@ -147,7 +146,6 @@ func TestWorkQueuePractice(t *testing.T) {
 						return
 					}
 
-
 					fmt.Printf("Worker %d failed to process %s. Putting it back to the queue to retry later.\n", n, key)
 					// 重新入队列
 					queue.AddRateLimited(key)
@@ -176,14 +174,7 @@ func TestWorkQueuePractice(t *testing.T) {
 	cancel()
 	time.Sleep(1 * time.Second)
 
-
-
-
-
 }
-
-
-
 
 func createConfigMap(client dynamic.Interface) *unstructured.Unstructured {
 
@@ -201,21 +192,18 @@ func createConfigMap(client dynamic.Interface) *unstructured.Unstructured {
 		},
 	}
 
-
 	cm, err := client.
 		Resource(ConfigMapResource).
 		Namespace(namespace).
 		Create(context.Background(), cm, metav1.CreateOptions{})
 
 	if err != nil {
-		fmt.Println("create err: ",err)
+		fmt.Println("create err: ", err)
 		return cm
 	}
 	fmt.Printf("create configmap: name %s, labels %s \n", cm.GetName(), cm.GetLabels())
 
-
 	return cm
-
 
 }
 
@@ -231,6 +219,5 @@ func deleteConfigMap(client dynamic.Interface, cm *unstructured.Unstructured) {
 	}
 
 	fmt.Println("delete configmap", cm.GetName())
-
 
 }

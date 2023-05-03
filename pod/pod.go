@@ -14,7 +14,6 @@ import (
 	"time"
 )
 
-
 // ListPod list出所有pod，返回 pod名 对象map error
 func ListPod(client *kubernetes.Clientset, namespace string, filter string) ([]string, map[string]*v1.Pod, error) {
 	names := make([]string, 0)

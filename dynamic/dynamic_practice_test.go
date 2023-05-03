@@ -14,7 +14,7 @@ import (
 
 /*
 	使用动态客户端 crud资源。
- */
+*/
 
 func TestDynamicClient(t *testing.T) {
 
@@ -23,8 +23,8 @@ func TestDynamicClient(t *testing.T) {
 	namespace := "default"
 	// unstructure 的组合GVR，区分资源对象
 	res := schema.GroupVersionResource{
-		Group: "",
-		Version: "v1",
+		Group:    "",
+		Version:  "v1",
 		Resource: "configmaps",
 	}
 
@@ -56,7 +56,6 @@ func TestDynamicClient(t *testing.T) {
 		log.Fatal("Created ConfigMap has unexpected data")
 	}
 
-
 	getObj, err := client.Resource(res).Namespace(namespace).
 		Get(context.Background(), obj.GetName(), metav1.GetOptions{})
 	if err != nil {
@@ -64,7 +63,6 @@ func TestDynamicClient(t *testing.T) {
 	}
 
 	fmt.Printf("get configmap:%s\n", getObj.GetName())
-
 
 	err = unstructured.SetNestedField(getObj.Object, "qux", "data", "foo")
 	if err != nil {
@@ -84,6 +82,6 @@ func TestDynamicClient(t *testing.T) {
 	if err != nil {
 		fmt.Println("delete error:", err)
 	}
-	fmt.Printf("Deleted ConfigMap %s\n",updateObj.GetName())
+	fmt.Printf("Deleted ConfigMap %s\n", updateObj.GetName())
 
 }

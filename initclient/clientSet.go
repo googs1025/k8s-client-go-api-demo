@@ -36,14 +36,12 @@ func K8sRestConfig() *rest.Config {
 	// 首先使用 inCluster 模式(需要去配置对应的 RBAC 权限，默认的sa是default->是没有获取deployments的List权限)
 	var config *rest.Config
 	config, err := rest.InClusterConfig()
-	if  err != nil {
+	if err != nil {
 		// 使用 KubeConfig 文件创建集群配置 Config 对象
 		if config, err = clientcmd.BuildConfigFromFlags("", *kubeConfig); err != nil {
 			log.Fatal(err)
 		}
 	}
-
-
 
 	return config
 }
@@ -79,7 +77,7 @@ func HomeDir() string {
 var ClientSet = &Client{}
 
 type Client struct {
-	Client kubernetes.Interface	// 因为需要单元测试，所以不要用 *kubernetes.Clientset
+	Client        kubernetes.Interface // 因为需要单元测试，所以不要用 *kubernetes.Clientset
 	DynamicClient dynamic.Interface
 }
 
@@ -89,4 +87,3 @@ func init() {
 	ClientSet.DynamicClient = InitDynamicClient(config)
 
 }
-

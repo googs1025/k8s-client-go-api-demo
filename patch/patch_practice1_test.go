@@ -16,15 +16,14 @@ func TestPatchPractice1(t *testing.T) {
 	client := initclient.ClientSet.Client //获取 clientset
 	var patchDeployment, err = client.AppsV1().Deployments("default").
 		Get(ctx, "patch-deployment", metav1.GetOptions{})
-	if err != nil{
+	if err != nil {
 		log.Fatal(err)
 	}
 
-
 	// 范例一：修改副本数
 	patchPost := map[string]interface{}{
-		"spec":map[string]interface{}{
-			"replicas":1,
+		"spec": map[string]interface{}{
+			"replicas": 1,
 		},
 	}
 
@@ -63,7 +62,7 @@ func TestPatchPractice1(t *testing.T) {
 	b, _ := json.Marshal(patchPost)
 	// patch操错
 	_, err = client.AppsV1().Deployments(patchDeployment.Namespace).
-		Patch(ctx, patchDeployment.Name, types.StrategicMergePatchType,b,metav1.PatchOptions{})
+		Patch(ctx, patchDeployment.Name, types.StrategicMergePatchType, b, metav1.PatchOptions{})
 
 	if err != nil {
 		log.Fatal(err)

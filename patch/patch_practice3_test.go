@@ -22,7 +22,7 @@ type JSONPatchList1 []*JSONPatch1
 func AddJsonPatch1(jps ...*JSONPatch1) JSONPatchList1 {
 	list := make([]*JSONPatch1, len(jps))
 	for index, jp := range jps {
-		list[index]=jp
+		list[index] = jp
 	}
 	return list
 }
@@ -32,24 +32,24 @@ func TestPatchPractice3(t *testing.T) {
 	// 动态客户端
 	dynamicClient := initclient.ClientSet.DynamicClient
 	patchPost := AddJsonPatch1(&JSONPatch1{
-		Op: "remove",
-		Path: "/spec/template/spec/containers/1",
+		Op:   "add",
+		Path: "/spec/template/spec/containers/-",
 		Value: map[string]interface{}{
-			"name":"redis",
-			"image":"redis:5-alpine",
+			"name":  "redis",
+			"image": "redis:5-alpine",
 		},
 	})
 
 	gvr := schema.GroupVersionResource{
 		Resource: "deployments",
-		Version: "v1",
-		Group: "apps",
+		Version:  "v1",
+		Group:    "apps",
 	}
 
 	b, _ := json.Marshal(patchPost)
 	_, err := dynamicClient.Resource(gvr).Namespace("default").
-		Patch(ctx,"patch-deployment",types.JSONPatchType, b, metav1.PatchOptions{})
-	if err != nil{
+		Patch(ctx, "patch-deployment", types.JSONPatchType, b, metav1.PatchOptions{})
+	if err != nil {
 		log.Fatalln(err)
 	}
 	fmt.Println("动态客户端patch成功")

@@ -17,17 +17,17 @@ import (
 // 控制器
 type Controller struct {
 	// 支持插入index的本地缓存
-	indexer  cache.Indexer
+	indexer cache.Indexer
 	// 工作队列，把监听到的资源放入队列
-	queue 	 workqueue.RateLimitingInterface
+	queue workqueue.RateLimitingInterface
 	// informer控制器
 	informer cache.Controller
 }
 
 func NewController(queue workqueue.RateLimitingInterface, indexer cache.Indexer, informer cache.Controller) *Controller {
 	return &Controller{
-		indexer: indexer,
-		queue: queue,
+		indexer:  indexer,
+		queue:    queue,
 		informer: informer,
 	}
 }
@@ -50,10 +50,10 @@ func (c *Controller) Run(threadNum int, stopC chan struct{}) {
 		return
 	}
 	// 启动worker数量
-	for i := 0 ; i < threadNum; i++ {
+	for i := 0; i < threadNum; i++ {
 		go wait.Until(c.runWorker, time.Second, stopC)
 	}
-	<- stopC
+	<-stopC
 
 	klog.Info("Stopping controller")
 
@@ -102,7 +102,6 @@ func (c *Controller) syncToStdout(key string) error {
 		fmt.Printf("Sync/Add/Update for Pod %s\n", obj.(*v1.Pod).GetName())
 	}
 
-
 	return nil
 }
 
@@ -129,7 +128,6 @@ func (c *Controller) handleErr(err error, key interface{}) {
 
 }
 
-
 func main() {
 	client := initclient.ClientSet.Client
 	// 创建 资源 ListWatcher
@@ -150,7 +148,7 @@ func main() {
 			}
 			queue.Add(key)
 		},
-		
+
 		UpdateFunc: func(oldObj, newObj interface{}) {
 			key, err := cache.MetaNamespaceKeyFunc(newObj)
 			if err != nil {
@@ -158,7 +156,7 @@ func main() {
 			}
 			queue.Add(key)
 		},
-		
+
 		DeleteFunc: func(obj interface{}) {
 			key, err := cache.DeletionHandlingMetaNamespaceKeyFunc(obj)
 			if err != nil {

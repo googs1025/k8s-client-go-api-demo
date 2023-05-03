@@ -14,8 +14,6 @@ type Scheme struct {
 	object    map[runtime.GroupVersionKind]runtime.Object
 }
 
-
-
 func (s *Scheme) AddKnownTypes(gvk runtime.GroupVersionKind, obj runtime.Object) {
 	t := reflect.TypeOf(obj)
 	if len(gvk.Version) == 0 {
@@ -43,7 +41,7 @@ func (s *Scheme) GetObjectKind(g runtime.GroupVersionKind) (runtime.Object, erro
 func NewScheme() *Scheme {
 	return &Scheme{
 		typeToGVK: map[reflect.Type][]runtime.GroupVersionKind{},
-		object:   map[runtime.GroupVersionKind]runtime.Object{},
+		object:    map[runtime.GroupVersionKind]runtime.Object{},
 	}
 }
 

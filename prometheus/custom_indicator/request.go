@@ -10,7 +10,7 @@ import (
 
 /*
 	请求，测试HPA用
- */
+*/
 
 func request() {
 	// 请求。
