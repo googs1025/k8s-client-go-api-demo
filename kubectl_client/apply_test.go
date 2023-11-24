@@ -1,4 +1,4 @@
-package apply
+package kubectl_client
 
 import (
 	"context"
@@ -30,7 +30,51 @@ func TestApply(t *testing.T) {
 
 	km := NewKubectlManagerOrDie(config)
 	if err := km.Apply(context.TODO(), []byte(configMapYAML)); err != nil {
-		log.Fatalf("apply error: %v", err)
+		log.Fatalf("kubectl_client error: %v", err)
+	}
+}
+
+func TestApplyByFile(t *testing.T) {
+
+	var kubeconfig *string
+	if home := homedir.HomeDir(); home != "" {
+		kubeconfig = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "(optional) absolute path to the kubeconfig file")
+	} else {
+		kubeconfig = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
+	}
+	flag.Parse()
+
+	// use the current context in kubeconfig
+	config, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	km := NewKubectlManagerOrDie(config)
+	if err := km.ApplyByFile(context.TODO(), "./test_pod.json"); err != nil {
+		log.Fatalf("kubectl_client error: %v", err)
+	}
+}
+
+func TestDeleteByFile(t *testing.T) {
+
+	var kubeconfig *string
+	if home := homedir.HomeDir(); home != "" {
+		kubeconfig = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "(optional) absolute path to the kubeconfig file")
+	} else {
+		kubeconfig = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
+	}
+	flag.Parse()
+
+	// use the current context in kubeconfig
+	config, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	km := NewKubectlManagerOrDie(config)
+	if err := km.DeleteByFile(context.TODO(), "./test_pod.json", false); err != nil {
+		log.Fatalf("delete error: %v", err)
 	}
 }
 
@@ -97,7 +141,7 @@ func TestConvertPod(t *testing.T) {
 
 	km := NewKubectlManagerOrDie(config)
 	if err := km.ApplyByResource(context.TODO(), pod); err != nil {
-		log.Fatalf("apply resource error: %v", err)
+		log.Fatalf("kubectl_client resource error: %v", err)
 	}
 
 }

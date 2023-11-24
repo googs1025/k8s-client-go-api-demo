@@ -1,4 +1,4 @@
-package apply
+package kubectl_client
 
 import (
 	"bytes"
@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	"io"
-	"k8s-api-practice/apply/convert"
+	"k8s-api-practice/kubectl_client/convert"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/meta"
@@ -29,6 +29,7 @@ import (
 	"k8s.io/client-go/restmapper"
 	"k8s.io/klog/v2"
 	"k8s.io/kubectl/pkg/util"
+	"os"
 	"strings"
 )
 
@@ -102,12 +103,32 @@ func (o *KubectlManager) Apply(ctx context.Context, data []byte) error {
 	return nil
 }
 
+// ApplyByResource 模拟 kubectl apply 功能，传入具体 k8s 对象
 func (o *KubectlManager) ApplyByResource(ctx context.Context, resource interface{}) error {
 	data, err := json.Marshal(resource)
 	if err != nil {
 		return err
 	}
 	return o.Apply(ctx, data)
+}
+
+// ApplyByFile 模拟 kubectl apply 功能，传入文件名路径
+// 可支持 yaml json 类型
+func (o *KubectlManager) ApplyByFile(ctx context.Context, fileName string) error {
+	content, err := os.ReadFile(fileName)
+	if err != nil {
+		return err
+	}
+	return o.Apply(ctx, content)
+}
+
+// DeleteByFile 模拟 kubectl delete 功能，传入文件名路径
+func (o *KubectlManager) DeleteByFile(ctx context.Context, fileName string, isNotFoundErrIgnore bool) error {
+	content, err := os.ReadFile(fileName)
+	if err != nil {
+		return err
+	}
+	return o.Delete(ctx, content, isNotFoundErrIgnore)
 }
 
 func (o *KubectlManager) DeleteByResource(ctx context.Context, resource interface{}, isNotFoundErrIgnore bool) error {
@@ -196,7 +217,7 @@ func (o *KubectlManager) applyUnstructured(ctx context.Context, unstructuredObj 
 		metadata, _ := meta.Accessor(unstructuredObj)
 		generateName := metadata.GetGenerateName()
 		if len(generateName) > 0 {
-			return nil, fmt.Errorf("from %s: cannot use generate name with apply", generateName)
+			return nil, fmt.Errorf("from %s: cannot use generate name with kubectl_client", generateName)
 		}
 	}
 
@@ -248,11 +269,11 @@ func (o *KubectlManager) applyUnstructured(ctx context.Context, unstructuredObj 
 		return client.Create(ctx, &unstructuredObj, metav1.CreateOptions{})
 	}
 
-	klog.Infof("The resource already exists, so apply %s ", unstructuredObj.GetName())
+	klog.Infof("The resource already exists, so kubectl_client %s ", unstructuredObj.GetName())
 	metadata, _ := meta.Accessor(currentUnstr)
 	annotationMap := metadata.GetAnnotations()
 	if _, ok := annotationMap[corev1.LastAppliedConfigAnnotation]; !ok {
-		klog.Warningf("[%s] apply should be used on resource created by either kubectl create --save-config or apply", metadata.GetName())
+		klog.Warningf("[%s] kubectl_client should be used on resource created by either kubectl create --save-config or kubectl_client", metadata.GetName())
 	}
 
 	// patch byte
@@ -292,7 +313,7 @@ func preparePatch(currentUnstr *unstructured.Unstructured, modified []byte, name
 			if mergepatch.IsPreconditionFailed(err) {
 				return nil, "", fmt.Errorf("At least one of apiVersion, kind and name was changed")
 			}
-			return nil, "", fmt.Errorf("unable to apply patch, %v", err)
+			return nil, "", fmt.Errorf("unable to kubectl_client patch, %v", err)
 		}
 	case err == nil:
 		patchType = types.StrategicMergePatchType
